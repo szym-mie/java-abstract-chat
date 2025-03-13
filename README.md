@@ -14,14 +14,14 @@ Somewhat bare-bones chat, implemented with threading and abstracting low level c
 
 After typing in your user's name, you can interact with the user with commands listed below.
 
-| command          | description                                |
-|------------------|--------------------------------------------|
-| `pm:<text>`      | send public message of <text>              |
-| `dm:<to>:<text>` | send direct message of <text> to user <to> |
-| `pxm:`           | send example pixmap over UDP               |
-| `ls:`            | list users                               |
-| `help:` / `?:`   | display help                               |
-| `quit:`          | quit                                       |
+| command          | description                                    |
+|------------------|------------------------------------------------|
+| `pm:<text>`      | send public message of `<text>`                |
+| `dm:<to>:<text>` | send direct message of `<text>` to user `<to>` |
+| `pxm:`           | send an example pixmap over UDP                |
+| `ls:`            | list users                                     |
+| `help:` / `?:`   | display help                                   |
+| `quit:`          | quit                                           |
 
 ### Notes
 
