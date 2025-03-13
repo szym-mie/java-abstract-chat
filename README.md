@@ -65,6 +65,27 @@ leaving decoding up to the application. Length of frame works exactly the same a
 | field     | `len` | `bytes`  |
 | Java type | `int` | `byte[]` |
 
+### Handlers
+
+This section describes handlers behaviour on message/frame received.
+
+#### TCP
+
+| message | params                            | effect                                                     |
+|---------|-----------------------------------|------------------------------------------------------------|
+| `join`  | `sender -> from`                  | adds a user to store                                       |
+| `+udp`  | `sender -> from, text -> port`    | opens UDP endpoint, attaches it to mux, starts UDP handler |
+| `pm`    | `sender -> from, text -> text`    | broadcasts message as is to other users                    |
+| `dm`    | `sender -> from, text -> to:text` | sends message as is to user `to`                           |
+| `ls`    | `sender -> from`                  | responds to sender with user list                          |
+| `quit`  | `sender -> from`                  | removes user `from` from store, closes its handlers        |
+
+#### UDP
+
+| frame | params | effect                                       |
+|-------|--------|----------------------------------------------|
+| any   | none   | broadcast frame as is to other UDP endpoints |
+
 ### Channels
 
 Channels are used for all communication between server and users. For each new user channel, the server launches new
