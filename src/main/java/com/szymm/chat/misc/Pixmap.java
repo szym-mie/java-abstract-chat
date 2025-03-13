@@ -1,7 +1,8 @@
-package com.szymm.chat;
+package com.szymm.chat.misc;
 
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public class Pixmap {
     private final byte x;
@@ -19,7 +20,8 @@ public class Pixmap {
     public static Pixmap of(String text) {
         String[] lines = text.replace('_', '0')
                 .split("\n");
-        LUT lut = Pixmap.getLUT(lines[0]);
+        LUT lut = Pixmap.findLUT(lines[0])
+                .orElseThrow(() -> new IllegalArgumentException("no such LUT"));
         byte x = (byte) (lines[1].length() / 2);
         byte y = (byte) (lines.length - 1);
         byte[] pixels = new byte[x * y];
@@ -67,10 +69,15 @@ public class Pixmap {
         return builder.toString();
     }
 
-    public static LUT getLUT(String id) {
-        return Pixmap.LUT_4W;
+    public static Optional<LUT> findLUT(String id) {
+        return Optional.ofNullable(switch (id) {
+            case "2w" -> Pixmap.LUT_2W;
+            case "4w" -> Pixmap.LUT_4W;
+            default -> null;
+        });
     }
 
+    public static final LUT LUT_2W = new LUT(new String[]{"  ", "██"});
     public static final LUT LUT_4W = new LUT(new String[]{"  ", "░░", "▓▓", "██"});
 
     public static class LUT {

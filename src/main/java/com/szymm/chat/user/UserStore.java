@@ -1,4 +1,4 @@
-package com.szymm.chat;
+package com.szymm.chat.user;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,26 +10,26 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Predicate;
 
 
-public class ClientStore {
-    private final Map<String, Client> clientMap;
+public class UserStore {
+    private final Map<String, User> clientMap;
     private final Lock readLock;
     private final Lock writeLock;
 
-    public ClientStore() {
+    public UserStore() {
         this.clientMap = new HashMap<>();
         ReadWriteLock lock = new ReentrantReadWriteLock();
         this.readLock = lock.readLock();
         this.writeLock = lock.writeLock();
     }
 
-    public void add(Client client) {
-        if (!client.name.matches("[-_a-zA-Z0-9]+"))
+    public void add(User user) {
+        if (!user.name.matches("[-_a-zA-Z0-9]+"))
             throw new IllegalArgumentException("illegal name");
         this.writeLock.lock();
         try {
-            if (this.clientMap.containsKey(client.name))
+            if (this.clientMap.containsKey(user.name))
                 throw new IllegalArgumentException("name already registered");
-            this.clientMap.put(client.name, client);
+            this.clientMap.put(user.name, user);
         } finally {
             this.writeLock.unlock();
         }
@@ -46,7 +46,7 @@ public class ClientStore {
         }
     }
 
-    public Client find(String name) {
+    public User find(String name) {
         this.readLock.lock();
         try {
             if (!this.clientMap.containsKey(name))
@@ -57,7 +57,7 @@ public class ClientStore {
         }
     }
 
-    public List<Client> findAll() {
+    public List<User> findAll() {
         this.readLock.lock();
         try {
             return this.clientMap.values()
@@ -68,7 +68,7 @@ public class ClientStore {
         }
     }
 
-    public List<Client> filter(Predicate<Client> predicate) {
+    public List<User> filter(Predicate<User> predicate) {
         this.readLock.lock();
         try {
             return this.clientMap.values()
@@ -80,14 +80,14 @@ public class ClientStore {
         }
     }
 
-    public List<Client> broadcast(String name) {
+    public List<User> broadcast(String name) {
         this.readLock.lock();
         try {
             if (!this.clientMap.containsKey(name))
                 throw new NoSuchElementException("no client named " + name);
-            Client origin = this.clientMap.get(name);
+            User origin = this.clientMap.get(name);
             return this.clientMap.values().stream()
-                    .filter(client -> client != origin)
+                    .filter(user -> user != origin)
                     .toList();
         } finally {
             this.readLock.unlock();

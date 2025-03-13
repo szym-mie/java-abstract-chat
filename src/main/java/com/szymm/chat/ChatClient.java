@@ -1,16 +1,25 @@
 package com.szymm.chat;
 
+import com.szymm.chat.net.Address;
+import com.szymm.chat.net.Frame;
+import com.szymm.chat.net.Message;
+import com.szymm.chat.net.TCPEndpoint;
+import com.szymm.chat.net.UDPEndpoint;
+import com.szymm.chat.misc.Pixmap;
+
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ChatClient {
+    private boolean shouldRun;
     private final TCPEndpoint tcpEndpoint;
     private final UDPEndpoint udpEndpoint;
     private String name;
 
     public ChatClient(String host, int tcpPort, int udpPort) throws IOException {
+        this.shouldRun = true;
         this.tcpEndpoint = new TCPEndpoint(Address.of(host, tcpPort));
         this.udpEndpoint = new UDPEndpoint(Address.of(host, udpPort));
     }
@@ -31,7 +40,7 @@ public class ChatClient {
         executorService.submit(this::listenTCP);
         executorService.submit(this::listenUDP);
 
-        while (true) {
+        while (this.shouldRun) {
             String line = in.nextLine();
             String[] parts = line.split(":", 2);
             if (parts.length == 2) {
@@ -127,7 +136,7 @@ public class ChatClient {
         System.out.println("  pm:<text>       send public message of <text>");
         System.out.println("  dm:<to>:<text>  send direct message of <text> to user <to>");
         System.out.println("  pxm:            send example pixmap over udp");
-        System.out.println("  ls:             list clients");
+        System.out.println("  ls:             list users");
         System.out.println("  help: / ?:      display this help");
         System.out.println("  quit:           quit");
     }
@@ -136,6 +145,7 @@ public class ChatClient {
         try {
             Message msgQuit = new Message(this.name, "quit", "");
             msgQuit.sendTo(this.tcpEndpoint);
+            this.shouldRun = false;
         } catch (IOException e) {
             System.out.println("quit IO exception: " + e);
         }
@@ -143,7 +153,7 @@ public class ChatClient {
 
     public void listenTCP() {
         try {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 Message msg = Message.from(this.tcpEndpoint);
                 System.out.println(msg);
             }
@@ -154,7 +164,7 @@ public class ChatClient {
 
     public void listenUDP() {
         try {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 this.udpEndpoint.multiplexer.read();
                 Frame frm = Frame.from(this.udpEndpoint);
                 System.out.println(frm);

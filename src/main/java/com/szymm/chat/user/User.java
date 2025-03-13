@@ -1,13 +1,16 @@
-package com.szymm.chat;
+package com.szymm.chat.user;
+
+import com.szymm.chat.net.TCPEndpoint;
+import com.szymm.chat.net.UDPEndpoint;
 
 import java.util.Optional;
 
-public class Client {
+public class User {
     public final String name;
     private TCPEndpoint tcpEndpoint;
     private UDPEndpoint udpEndpoint;
 
-    public Client(String name, TCPEndpoint tcpEndpoint, UDPEndpoint udpEndpoint) {
+    public User(String name, TCPEndpoint tcpEndpoint, UDPEndpoint udpEndpoint) {
         this.name = name;
         this.tcpEndpoint = tcpEndpoint;
         this.udpEndpoint = udpEndpoint;

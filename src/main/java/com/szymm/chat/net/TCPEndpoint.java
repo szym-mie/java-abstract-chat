@@ -1,4 +1,4 @@
-package com.szymm.chat;
+package com.szymm.chat.net;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

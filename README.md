@@ -12,23 +12,23 @@ Somewhat bare-bones chat, implemented with threading and abstracting low level c
 
 ### Usage
 
-After typing in your client's name, you can interact with the client with commands listed below.
+After typing in your user's name, you can interact with the user with commands listed below.
 
 | command          | description                                |
 |------------------|--------------------------------------------|
 | `pm:<text>`      | send public message of <text>              |
 | `dm:<to>:<text>` | send direct message of <text> to user <to> |
 | `pxm:`           | send example pixmap over UDP               |
-| `ls:`            | list clients                               |
+| `ls:`            | list users                               |
 | `help:` / `?:`   | display help                               |
 | `quit:`          | quit                                       |
 
 ### Notes
 
-- All clients reserve random ports, servers ports can be found in `Server/Channels` section below.
-- The client issues two commands after you input the name: `join` and `+udp`, meaning that both TCP and UDP channels get
+- All users reserve random ports, servers ports can be found in `Server/Channels` section below.
+- The user issues two commands after you input the name: `join` and `+udp`, meaning that both TCP and UDP channels get
   created on the server automatically. You can send any message or frame afterward.
-- Launch clients after launching the server, otherwise the client will exit, not being able to connect anywhere.
+- Launch users after launching the server, otherwise the user will exit, not being able to connect anywhere.
 
 ## Server
 
@@ -67,7 +67,7 @@ leaving decoding up to the application. Length of frame works exactly the same a
 
 ### Channels
 
-Channels are used for all communication between server and clients. For each new client channel, the server launches new
+Channels are used for all communication between server and users. For each new user channel, the server launches new
 handler, along with a new thread.
 
 | proto | port     | used for           |  
@@ -77,8 +77,8 @@ handler, along with a new thread.
 
 ### Endpoints
 
-Endpoints are objects that receive and send data, representing one destination only (be it clients or server). Handlers
-operate on endpoints, each handler owns one endpoint, but can propagate messages or frames further by reading client 
+Endpoints are objects that receive and send data, representing one destination only (be it users or server). Handlers
+operate on endpoints, each handler owns one endpoint, but can propagate messages or frames further by reading user 
 store.
 
 ### UDP multiplexer
@@ -89,4 +89,4 @@ socket, which receives all traffic, and multiple UDP endpoints, there is a bridg
 Every time multiplexer receives a packet it tries to recognize to which endpoint it should be delivered. If mux finds
 receiver, the packet's data is written to the endpoint's input stream, allowing the endpoint to process it later.
 
-This allows creation of handlers for each UDP client, making it excellent for more demanding handler operations.
+This allows creation of handlers for each UDP user, making it excellent for more demanding handler operations.
