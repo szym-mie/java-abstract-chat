@@ -1,6 +1,6 @@
 # Java Abstract Chat
 
-Somewhat bare-bones chat, implemented with threading and abstracting low-level code for more object-oriented approach.
+Somewhat bare-bones chat, implemented with threading and abstracting low level code for a more object-oriented approach.
 
 ## Client
 
