@@ -73,7 +73,7 @@ This section describes handlers behaviour on message/frame received.
 
 | message | params                            | effect                                                     |
 |---------|-----------------------------------|------------------------------------------------------------|
-| `join`  | `sender -> from`                  | adds a user to store                                       |
+| `join`  | `sender -> from`                  | adds a user `from` to store                                |
 | `+udp`  | `sender -> from, text -> port`    | opens UDP endpoint, attaches it to mux, starts UDP handler |
 | `pm`    | `sender -> from, text -> text`    | broadcasts message as is to other users                    |
 | `dm`    | `sender -> from, text -> to:text` | sends message as is to user `to`                           |

@@ -14,7 +14,7 @@ public class UDPEndpoint implements Endpoint {
         this.multiplexer = multiplexer;
         this.address = address;
         this.inStream = multiplexer.attach(this);
-        this.bufferStream = new ByteArrayOutputStream(1024);
+        this.bufferStream = new ByteArrayOutputStream(4032);
     }
 
     public UDPEndpoint(Address address) throws IOException {

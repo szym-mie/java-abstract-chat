@@ -18,7 +18,7 @@ public class TCPEndpoint implements Endpoint {
         this.address = Address.of(remoteSocket);
         this.outStream = remoteSocket.getOutputStream();
         this.inStream = remoteSocket.getInputStream();
-        this.bufferStream = new ByteArrayOutputStream(128);
+        this.bufferStream = new ByteArrayOutputStream(960);
     }
 
     public TCPEndpoint(Address address) throws IOException {
